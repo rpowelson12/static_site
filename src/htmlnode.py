@@ -1,4 +1,4 @@
-
+from textnode import TextType, TextNode
 
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
@@ -43,4 +43,37 @@ class LeafNode(HTMLNode):
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
     
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, children=children, props=None)
     
+    def to_html(self):
+        ## Value Checks
+        if not self.tag:
+            raise ValueError("ParentNode needs a tag value")
+        if not self.children:
+            raise ValueError("Every ParentNode needs children")
+        
+        #Children Loops and HTML building
+        html_parts = [child.to_html() for child in self.children]
+        html = ''.join(html_parts)
+        return f"<{self.tag}>{html}</{self.tag}>"
+
+def text_node_to_html_node(text_node):
+    type = text_node.TextType
+    value = text_node.text 
+
+    if type == TextType.TEXT:
+        return LeafNode(None, value)
+    elif type == TextType.BOLD:
+        return LeafNode("b",value)
+    elif type == TextType.CODE:
+        return LeafNode('code', value)
+    elif type == TextType.IMAGE:
+        return LeafNode('img', "", {"src": text_node.url, "alt":value})
+    elif type == TextType.ITALIC:
+        return LeafNode('i', value)
+    elif type == TextType.LINK:
+        return LeafNode('a', value, {"href": text_node.url})
+    else: 
+        raise ValueError(f'Invalid text type: {type}')
