@@ -60,7 +60,7 @@ class ParentNode(HTMLNode):
         return f"<{self.tag}>{html}</{self.tag}>"
 
 def text_node_to_html_node(text_node):
-    type = text_node.TextType
+    type = text_node.text_type
     value = text_node.text 
 
     if type == TextType.TEXT:
