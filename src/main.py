@@ -1,7 +1,9 @@
 from textnode import TextNode, TextType
 
+
 def main():
-    test = TextNode("this is some dummy data", TextType.LINK, "https://www.google.com")
-    print(test)
+    node = TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
+    print(node)
+
 
 main()
